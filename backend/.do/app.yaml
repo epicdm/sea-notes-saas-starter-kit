@@ -1,0 +1,78 @@
+name: epic-voice-backend
+region: nyc
+
+services:
+  - name: api
+    github:
+      repo: epicdm/sea-notes-saas-starter-kit
+      branch: main
+      deploy_on_push: true
+
+    source_dir: backend
+
+    envs:
+      # Database
+      - key: DATABASE_URL
+        value: ${epic-voice-db.DATABASE_URL}
+        scope: RUN_AND_BUILD_TIME
+
+      # Flask
+      - key: SECRET_KEY
+        type: SECRET
+        scope: RUN_TIME
+
+      # LiveKit
+      - key: LIVEKIT_URL
+        type: SECRET
+        scope: RUN_TIME
+
+      - key: LIVEKIT_API_KEY
+        type: SECRET
+        scope: RUN_TIME
+
+      - key: LIVEKIT_API_SECRET
+        type: SECRET
+        scope: RUN_TIME
+
+      # OpenAI
+      - key: OPENAI_API_KEY
+        type: SECRET
+        scope: RUN_TIME
+
+      # Clerk Auth
+      - key: CLERK_SECRET_KEY
+        type: SECRET
+        scope: RUN_TIME
+
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        scope: RUN_TIME
+
+      # App URL
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://ai.epic.dm
+        scope: RUN_TIME
+
+      # Port
+      - key: PORT
+        value: "8080"
+        scope: RUN_TIME
+
+    http_port: 8080
+
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 30
+      period_seconds: 10
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 3
+
+    run_command: gunicorn --bind 0.0.0.0:8080 --workers 2 --timeout 120 app:app
+
+    instance_count: 1
+    instance_size_slug: basic-xxs
+
+databases:
+  - name: epic-voice-db
+    engine: PG
+    version: "18"
