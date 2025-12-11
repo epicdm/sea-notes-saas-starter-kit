@@ -58,18 +58,18 @@ const HeroSection = () => {
             >
               AI Voice Agents That Actually Work
             </Typography>
-            <Typography 
-              variant="h6" 
-              component="p" 
-              color="text.secondary" 
-              sx={{ 
-                maxWidth: DIMENSIONS.layout.maxContentWidth, 
+            <Typography
+              variant="h6"
+              component="p"
+              color="text.secondary"
+              sx={{
+                maxWidth: DIMENSIONS.layout.maxContentWidth,
                 mx: 'auto',
                 textAlign: 'center',
                 width: '100%'
               }}
             >
-              Launch your SaaS product in record time with our powerful, ready-to-use template. Packed with modern technologies and essential integrations.
+              Build powerful AI voice agents for customer service, sales, and support. Deploy intelligent voice automation in minutes with our enterprise-grade platform.
             </Typography>
             <Box component="nav" aria-label="Primary actions">
               <CTAButtons />

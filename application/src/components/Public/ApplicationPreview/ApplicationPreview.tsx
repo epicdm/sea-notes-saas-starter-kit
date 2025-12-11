@@ -49,7 +49,7 @@ const ApplicationPreview = () => {
                 <Box sx={{ width: DIMENSIONS.terminalDot.width, height: DIMENSIONS.terminalDot.height, borderRadius: '50%', bgcolor: '#ffbd2e' }} />
                 <Box sx={{ width: DIMENSIONS.terminalDot.width, height: DIMENSIONS.terminalDot.height, borderRadius: '50%', bgcolor: '#27ca3f' }} />
                 <Typography variant="body2" sx={{ color: 'grey.400', ml: 2, fontFamily: 'monospace' }}>
-                  SeaNotes - localhost:3000
+                  Epic Voice AI - Dashboard
                 </Typography>
               </Box>
               
@@ -68,14 +68,14 @@ const ApplicationPreview = () => {
                 }}>
                   <Stack spacing={DIMENSIONS.spacing.small}>
                     <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
-                      🐳 SeaNotes
+                      🎙️ Epic Voice AI
                     </Typography>
                     <Box sx={{ height: 1, bgcolor: 'divider', my: 1 }} />
                     <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
                       Dashboard
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      My Notes
+                      Agents
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                       Subscription
@@ -91,23 +91,23 @@ const ApplicationPreview = () => {
                   <Stack spacing={DIMENSIONS.spacing.stack}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Typography variant="h5" fontWeight="bold">
-                        My Notes
+                        Voice Agents
                       </Typography>
                       <Button variant="contained" size="small" sx={{ bgcolor: 'primary.main' }}>
-                        Add Note
+                        Create Agent
                       </Button>
                     </Box>
-                    
+
                     <Box sx={{
                       display: 'grid',
                       gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
                       gap: DIMENSIONS.spacing.small
                     }}>
-                      {/* Note cards */}
+                      {/* Agent cards */}
                       {[
-                        { title: 'Project Ideas', content: 'Build a SaaS starter kit...', date: '2 hours ago' },
-                        { title: 'Meeting Notes', content: 'Discuss new features...', date: '1 day ago' },
-                        { title: 'Todo List', content: 'Implement authentication...', date: '3 days ago' }
+                        { title: 'Sales Assistant', content: 'Handles product inquiries...', date: 'Active' },
+                        { title: 'Support Agent', content: 'Customer service calls...', date: 'Active' },
+                        { title: 'Appointment Bot', content: 'Schedules meetings...', date: 'Deployed' }
                       ].map((note, index) => (
                         <Card key={index} sx={{ p: DIMENSIONS.spacing.small, cursor: 'pointer', '&:hover': { bgcolor: 'grey.50' } }}>
                           <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
