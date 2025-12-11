@@ -3,8 +3,10 @@
 -- 1. Rename password to passwordHash
 ALTER TABLE "users" RENAME COLUMN "password" TO "passwordHash";
 
--- 2. Create UserRole enum type
+-- 2. Create enum types
 CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
+CREATE TYPE "SubscriptionStatus" AS ENUM ('ACTIVE', 'CANCELED', 'PENDING');
+CREATE TYPE "SubscriptionPlan" AS ENUM ('FREE', 'PRO');
 
 -- 3. Add role column with enum type
 ALTER TABLE "users" ADD COLUMN "role" "UserRole" NOT NULL DEFAULT 'USER';
@@ -37,12 +39,12 @@ CREATE TABLE IF NOT EXISTS "notes" (
   CONSTRAINT "notes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- 9. Create saas_subscriptions table
+-- 9. Create saas_subscriptions table with enum types
 CREATE TABLE IF NOT EXISTS "saas_subscriptions" (
   "id" TEXT NOT NULL PRIMARY KEY,
   "userId" TEXT NOT NULL UNIQUE,
-  "status" TEXT,
-  "plan" TEXT,
+  "status" "SubscriptionStatus",
+  "plan" "SubscriptionPlan",
   "customerId" TEXT,
   "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updatedAt" TIMESTAMP(3) NOT NULL,
