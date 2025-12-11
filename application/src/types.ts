@@ -7,10 +7,8 @@ export interface User {
   email: string;
   passwordHash: string;
   image: string | null;
-
   role: UserRole;
   createdAt: Date;
-
   verificationToken?: string | null;
   emailVerified: boolean;
 }

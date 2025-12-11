@@ -15,20 +15,24 @@ datasource db {
 // ============================================
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?   // For email/password auth
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                 String    @id @default(cuid())
+  name               String    @default("")
+  email              String    @unique
+  emailVerified      Boolean   @default(false)
+  image              String?
+  passwordHash       String    // For email/password auth (renamed from password)
+  role               String    @default("user") // user or admin
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  verificationToken  String?
 
   accounts      Account[]
   sessions      Session[]
   memberships   Membership[]
   ownedOrgs     Organization[] @relation("OrgOwner")
-  
+  notes         Note[]
+  saasSubscription SaasSubscription?
+
   @@map("users")
 }
 
@@ -179,4 +183,35 @@ model ApiKey {
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@map("api_keys")
+}
+
+// ============================================
+// SaaS Starter Kit Required Models
+// ============================================
+
+model Note {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notes")
+}
+
+model SaasSubscription {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  status     String?  // ACTIVE, CANCELED, PENDING
+  plan       String?  // FREE, PRO
+  customerId String?  // Stripe customer ID
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("saas_subscriptions")
 }

@@ -64,16 +64,21 @@ export class SqlDatabaseService extends DatabaseClient {
         }
       }
 
-      const [users, total] = await Promise.all([
+      const [rawUsers, total] = await Promise.all([
         prisma.user.findMany({
           where,
-          include: { subscription: true },
+          include: { saasSubscription: true },
           orderBy: { name: 'asc' },
           skip,
           take: pageSize,
         }),
         prisma.user.count({ where }),
       ]);
+      // Map saasSubscription to subscription for compatibility
+      const users = rawUsers.map(user => ({
+        ...user,
+        subscription: user.saasSubscription,
+      })) as UserWithSubscriptions[];
       return { users, total };
     },
     create: async (user: Omit<User, 'id' | 'createdAt'>): Promise<User> => {
@@ -101,35 +106,36 @@ export class SqlDatabaseService extends DatabaseClient {
       userId: string,
       status: SubscriptionStatus
     ): Promise<Subscription | null> => {
-      return prisma.subscription.findFirst({
+      return prisma.saasSubscription.findFirst({
         where: { userId, status },
       });
     },
     findById: async (id: string): Promise<Subscription | null> => {
-      return prisma.subscription.findUnique({ where: { id } });
+      return prisma.saasSubscription.findUnique({ where: { id } });
     },
     findByUserId: async (userId: string): Promise<Subscription[]> => {
-      return prisma.subscription.findMany({ where: { userId } });
+      const sub = await prisma.saasSubscription.findUnique({ where: { userId } });
+      return sub ? [sub] : [];
     },
     create: async (subscription: Omit<Subscription, 'id' | 'createdAt'>): Promise<Subscription> => {
-      return prisma.subscription.create({ data: subscription });
+      return prisma.saasSubscription.create({ data: subscription });
     },
     update: async (
       userId: string,
       subscription: Partial<Omit<Subscription, 'id' | 'createdAt'>>
     ): Promise<Subscription> => {
-      return prisma.subscription.update({ where: { userId }, data: subscription });
+      return prisma.saasSubscription.update({ where: { userId }, data: subscription });
     },
     updateByCustomerId: async (
       customerId: string,
       subscription: Partial<Omit<Subscription, 'id' | 'createdAt'>>
     ): Promise<Subscription> => {
-      const existing = await prisma.subscription.findFirst({ where: { customerId } });
+      const existing = await prisma.saasSubscription.findFirst({ where: { customerId } });
       if (!existing) throw new Error('Subscription not found for customerId');
-      return prisma.subscription.update({ where: { id: existing.id }, data: subscription });
+      return prisma.saasSubscription.update({ where: { id: existing.id }, data: subscription });
     },
     delete: async (id: string): Promise<void> => {
-      await prisma.subscription.delete({ where: { id } });
+      await prisma.saasSubscription.delete({ where: { id } });
     },
   };
   note = {
