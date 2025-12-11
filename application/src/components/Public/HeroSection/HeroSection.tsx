@@ -34,29 +34,29 @@ const HeroSection = () => {
             alignItems: 'center',
             gap: DIMENSIONS.spacing.container
           }}>
-            <Typography 
-              variant="h1" 
-              component="h1" 
+            <Typography
+              variant="h1"
+              component="h1"
               id="hero-title"
               fontWeight="bold"
-              sx={{ 
+              sx={{
                 textAlign: 'center',
                 width: '100%'
               }}
             >
-              SeaNotes
+              Epic Voice AI
             </Typography>
-            <Typography 
-              variant="h3" 
-              component="h2" 
-              fontWeight="bold" 
+            <Typography
+              variant="h3"
+              component="h2"
+              fontWeight="bold"
               color="primary.main"
-              sx={{ 
+              sx={{
                 textAlign: 'center',
                 width: '100%'
               }}
             >
-              Build Your SaaS Faster Than Ever
+              AI Voice Agents That Actually Work
             </Typography>
             <Typography 
               variant="h6" 

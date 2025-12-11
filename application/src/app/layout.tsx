@@ -35,8 +35,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'SeaNotes',
-  description: 'SeaNotes - A SaaS Starter Kit note-taking app from DigitalOcean',
+  title: 'Epic Voice AI',
+  description: 'Epic Voice AI - Advanced AI voice agents for customer engagement and automation',
 };
 
 /**
