@@ -1,0 +1,76 @@
+name: epic-voice-backend
+region: nyc
+
+services:
+  - name: api
+    github:
+      repo: epicdm/sea-notes-saas-starter-kit
+      branch: main
+      deploy_on_push: true
+    source_dir: backend
+
+    http_port: 8080
+
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 30
+      period_seconds: 10
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 3
+
+    run_command: gunicorn --bind 0.0.0.0:8080 --workers 2 --timeout 120 app:app
+
+    instance_count: 1
+    instance_size_slug: basic-xxs
+
+    envs:
+      - key: DATABASE_URL
+        value: ${DATABASE_URL}
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+
+      - key: SECRET_KEY
+        value: ${SECRET_KEY}
+        scope: RUN_TIME
+        type: SECRET
+
+      - key: LIVEKIT_URL
+        value: ${LIVEKIT_URL}
+        scope: RUN_TIME
+        type: SECRET
+
+      - key: LIVEKIT_API_KEY
+        value: ${LIVEKIT_API_KEY}
+        scope: RUN_TIME
+        type: SECRET
+
+      - key: LIVEKIT_API_SECRET
+        value: ${LIVEKIT_API_SECRET}
+        scope: RUN_TIME
+        type: SECRET
+
+      - key: OPENAI_API_KEY
+        value: ${OPENAI_API_KEY}
+        scope: RUN_TIME
+        type: SECRET
+
+      - key: CLERK_SECRET_KEY
+        value: ${CLERK_SECRET_KEY}
+        scope: RUN_TIME
+        type: SECRET
+
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        value: ${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+        scope: RUN_TIME
+        type: GENERAL
+
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://ai.epic.dm
+        scope: RUN_TIME
+        type: GENERAL
+
+      - key: PORT
+        value: "8080"
+        scope: RUN_TIME
+        type: GENERAL
