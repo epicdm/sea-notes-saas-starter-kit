@@ -6,7 +6,6 @@ import {
   Container,
   Typography,
   Button,
-  Grid,
   Card,
   CardContent,
   CardActions,
@@ -14,6 +13,7 @@ import {
   IconButton,
   Stack,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import {
   Add as AddIcon,
   PlayArrow as PlayIcon,
@@ -120,7 +120,7 @@ export default function AgentsPage() {
 
       <Grid container spacing={3}>
         {agents.map((agent) => (
-          <Grid item xs={12} md={6} lg={4} key={agent.id}>
+          <Grid size={{ xs: 12, md: 6, lg: 4 }} key={agent.id}>
             <Card
               sx={{
                 height: '100%',
