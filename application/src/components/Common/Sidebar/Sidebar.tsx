@@ -99,6 +99,13 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
             Dashboard
           </SidebarLink>
           <SidebarLink
+            href="/dashboard/agents"
+            icon={<Receipt fontSize="small" />}
+            onClick={onNavigate}
+          >
+            Agents
+          </SidebarLink>
+          <SidebarLink
             href="/dashboard/my-notes"
             icon={<Receipt fontSize="small" />}
             onClick={onNavigate}
