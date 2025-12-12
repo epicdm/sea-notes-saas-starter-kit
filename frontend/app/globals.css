@@ -1,0 +1,307 @@
+@import "tailwindcss";
+
+/* LIGHT MODE - Modern Design System */
+:root {
+  --button-outline: rgba(0,0,0, .08);
+  --badge-outline: rgba(0,0,0, .04);
+  --opaque-button-border-intensity: -8;
+  --elevate-1: rgba(0,0,0, .02);
+  --elevate-2: rgba(0,0,0, .06);
+
+  /* ===== Target Design System (RGB Format) ===== */
+  /* Primary Color Palette */
+  --primary-rgb: 59 130 246;        /* #3B82F6 - Blue-500 */
+  --primary-foreground-rgb: 255 255 255;
+  --secondary-rgb: 100 116 139;     /* #64748B - Slate-500 */
+  --secondary-foreground-rgb: 255 255 255;
+
+  /* Semantic Colors */
+  --success: 16 185 129;            /* #10B981 - Green-500 */
+  --success-foreground: 255 255 255;
+  --warning: 245 158 11;            /* #F59E0B - Yellow-500 */
+  --warning-foreground: 255 255 255;
+  --error: 239 68 68;               /* #EF4444 - Red-500 */
+  --error-foreground: 255 255 255;
+  --info: 59 130 246;               /* #3B82F6 - Blue-500 */
+  --info-foreground: 255 255 255;
+
+  /* Neutral Palette (Light Mode) */
+  --background-rgb: 255 255 255;    /* #FFFFFF */
+  --foreground-rgb: 15 23 42;       /* #0F172A - Slate-900 */
+  --muted-rgb: 248 250 252;         /* #F8FAFC - Slate-50 */
+  --muted-foreground-rgb: 100 116 139; /* #64748B - Slate-500 */
+  --border-rgb: 226 232 240;        /* #E2E8F0 - Slate-200 */
+  --input-rgb: 226 232 240;
+  --ring-rgb: 59 130 246;           /* #3B82F6 - Primary */
+
+  /* Card */
+  --card-rgb: 255 255 255;
+  --card-foreground-rgb: 15 23 42;
+
+  /* Popover */
+  --popover-rgb: 255 255 255;
+  --popover-foreground-rgb: 15 23 42;
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;  /* 4px */
+  --radius-md: 0.5rem;   /* 8px */
+  --radius-lg: 0.75rem;  /* 12px */
+  --radius-xl: 1rem;     /* 16px */
+
+  /* ===== Existing HSL Variables (for compatibility) ===== */
+  /* Main Colors - Format: H S% L% (space-separated, no hsl()) */
+  --background: 0 0% 100%;
+  --foreground: 215 25% 18%;
+  --border: 215 12% 93%;
+
+  --card: 215 2% 99%;
+  --card-foreground: 215 25% 18%;
+  --card-border: 215 10% 94%;
+
+  --primary: 215 92% 52%;           /* Modern Premium Blue */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 215 8% 92%;
+  --secondary-foreground: 215 25% 18%;
+
+  --muted: 215 10% 90%;
+  --muted-foreground: 215 12% 48%;
+
+  --accent: 215 10% 88%;
+  --accent-foreground: 215 25% 18%;
+
+  --destructive: 0 84% 58%;
+  --destructive-foreground: 0 0% 100%;
+
+  --input: 215 18% 80%;
+  --ring: 215 92% 52%;
+
+  /* Chart Colors */
+  --chart-1: 215 92% 52%; /* Blue */
+  --chart-2: 152 71% 48%; /* Green */
+  --chart-3: 270 68% 58%; /* Purple */
+  --chart-4: 35 92% 52%;  /* Orange */
+  --chart-5: 199 89% 48%; /* Cyan */
+
+  /* Typography */
+  --font-sans: Inter, -apple-system, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --radius: .625rem;
+}
+
+/* DARK MODE - Modern Design System */
+.dark {
+  --button-outline: rgba(255,255,255, .12);
+  --badge-outline: rgba(255,255,255, .08);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(255,255,255, .05);
+  --elevate-2: rgba(255,255,255, .08);
+
+  /* ===== Target Design System (RGB Format - Dark Mode) ===== */
+  --background-rgb: 15 23 42;       /* #0F172A - Slate-900 */
+  --foreground-rgb: 248 250 252;    /* #F8FAFC - Slate-50 */
+  --muted-rgb: 30 41 59;            /* #1E293B - Slate-800 */
+  --muted-foreground-rgb: 148 163 184; /* #94A3B8 - Slate-400 */
+  --border-rgb: 51 65 85;           /* #334155 - Slate-700 */
+  --input-rgb: 51 65 85;
+
+  --card-rgb: 30 41 59;             /* #1E293B - Slate-800 */
+  --card-foreground-rgb: 248 250 252;
+
+  --popover-rgb: 30 41 59;
+  --popover-foreground-rgb: 248 250 252;
+
+  /* ===== Existing HSL Variables (for compatibility) ===== */
+  --background: 215 20% 10%;
+  --foreground: 215 8% 96%;
+  --border: 215 15% 28%;
+
+  --card: 215 18% 15%;
+  --card-foreground: 215 8% 96%;
+  --card-border: 215 15% 32%;
+
+  --primary: 215 88% 62%;
+  --primary-foreground: 215 25% 12%;
+
+  --secondary: 215 12% 30%;
+  --secondary-foreground: 215 8% 96%;
+
+  --muted: 215 12% 26%;
+  --muted-foreground: 215 8% 72%;
+
+  --accent: 215 15% 32%;
+  --accent-foreground: 215 8% 96%;
+
+  --destructive: 0 84% 62%;
+  --destructive-foreground: 0 0% 100%;
+
+  --input: 215 18% 45%;
+  --ring: 215 88% 62%;
+
+  --chart-1: 215 88% 65%;
+  --chart-2: 152 71% 58%;
+  --chart-3: 270 68% 65%;
+  --chart-4: 35 92% 62%;
+  --chart-5: 199 89% 58%;
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    font-family: var(--font-sans);
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Modern Typography Hierarchy */
+  h1 {
+    @apply text-3xl font-bold tracking-tight;
+  }
+  h2 {
+    @apply text-2xl font-bold tracking-tight;
+  }
+  h3 {
+    @apply text-xl font-semibold tracking-tight;
+  }
+  h4 {
+    @apply text-lg font-semibold;
+  }
+}
+
+/* Hover/Active Elevation System - Enhanced */
+@layer utilities {
+  .hover-elevate {
+    @apply transition-all duration-200;
+  }
+
+  .hover-elevate:hover {
+    @apply shadow-lg -translate-y-0.5;
+  }
+
+  .active-elevate-2 {
+    @apply transition-all duration-150;
+  }
+
+  .active-elevate-2:active {
+    @apply shadow-md;
+  }
+}
+
+/* Modern Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.4);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.6);
+  background-clip: padding-box;
+}
+
+/* ===== Target-inspired animations ===== */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoom-in {
+  from { transform: scale(0.95); }
+  to { transform: scale(1); }
+}
+
+@keyframes slide-in-from-top {
+  from { transform: translateY(-8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-in-from-bottom {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-in-from-left {
+  from { transform: translateX(-8px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-in-from-right {
+  from { transform: translateX(8px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Animation utility classes */
+.animate-in {
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+.fade-in-0 {
+  animation-name: fade-in;
+}
+
+.zoom-in-95 {
+  animation-name: zoom-in;
+}
+
+.slide-in-from-top-2 {
+  animation-name: slide-in-from-top;
+}
+
+.slide-in-from-bottom-2 {
+  animation-name: slide-in-from-bottom;
+}
+
+.slide-in-from-left-2 {
+  animation-name: slide-in-from-left;
+}
+
+.slide-in-from-right-2 {
+  animation-name: slide-in-from-right;
+}
+
+/* Background Grid Pattern */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.dark .bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Slide Up Fade In Animation */
+@keyframes slide-up-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-fade-in {
+  animation: slide-up-fade-in 0.6s ease-out forwards;
+}

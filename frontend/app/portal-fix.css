@@ -1,0 +1,58 @@
+/* CRITICAL: Portal root must not create stacking context */
+#portal-root {
+  position: relative;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+#portal-root > * {
+  pointer-events: auto;
+}
+
+/* CRITICAL: Force dialog to always be on top - PERMANENT FIX */
+/* Radix UI Dialogs */
+[data-slot="dialog-overlay"],
+[data-slot="dialog-content"],
+[data-radix-dialog-overlay],
+[data-radix-dialog-content] {
+  position: fixed !important;
+  z-index: 999999 !important;
+}
+
+[data-slot="dialog-overlay"],
+[data-radix-dialog-overlay] {
+  inset: 0 !important;
+}
+
+[data-slot="dialog-content"],
+[data-radix-dialog-content] {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+/* HeroUI Modals - CRITICAL FIX */
+[data-slot="backdrop"],
+[data-slot="wrapper"],
+[data-slot="base"] {
+  position: fixed !important;
+  z-index: 999999 !important;
+}
+
+[data-slot="backdrop"] {
+  inset: 0 !important;
+}
+
+/* HeroUI Modal wrapper and base */
+div[role="dialog"],
+div[role="presentation"] {
+  position: fixed !important;
+  z-index: 999999 !important;
+}
+
+/* Force all modals to top */
+.heroui-modal-wrapper,
+.heroui-modal,
+[class*="modal"] {
+  z-index: 999999 !important;
+}

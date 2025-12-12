@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout Test</title>
+    <link rel="stylesheet" href="/_next/static/css/app/layout.css">
+    <style>
+        /* Debug borders */
+        .debug-outer {
+            border: 3px solid red !important;
+        }
+        .debug-inner {
+            border: 3px solid blue !important;
+        }
+        .debug-card {
+            border: 3px solid green !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Test 1: Exact structure from signin page with debug borders -->
+    <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 px-4 debug-outer">
+        <div class="w-full max-w-md debug-inner">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold">Layout Test</h1>
+                <p class="text-muted-foreground">This should be centered</p>
+            </div>
+            <div class="bg-card border border-border rounded-xl p-8 shadow-lg debug-card">
+                <p>Form content here</p>
+                <div style="height: 200px; background: rgba(0,0,0,0.1); margin-top: 1rem;">
+                    <p style="padding: 1rem;">This represents the form</p>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-xs text-muted-foreground">
+                <p>✓ Debug test page</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Log computed styles for debugging
+        window.onload = function() {
+            const outer = document.querySelector('.debug-outer');
+            const inner = document.querySelector('.debug-inner');
+
+            console.log('=== LAYOUT DIAGNOSTIC ===');
+            console.log('Outer div computed styles:');
+            const outerStyles = window.getComputedStyle(outer);
+            console.log('  display:', outerStyles.display);
+            console.log('  align-items:', outerStyles.alignItems);
+            console.log('  justify-content:', outerStyles.justifyContent);
+            console.log('  min-height:', outerStyles.minHeight);
+
+            console.log('\nInner div computed styles:');
+            const innerStyles = window.getComputedStyle(inner);
+            console.log('  width:', innerStyles.width);
+            console.log('  max-width:', innerStyles.maxWidth);
+            console.log('  margin-left:', innerStyles.marginLeft);
+            console.log('  margin-right:', innerStyles.marginRight);
+
+            console.log('\nWindow dimensions:');
+            console.log('  innerWidth:', window.innerWidth);
+            console.log('  innerHeight:', window.innerHeight);
+
+            console.log('\nElement positions:');
+            const outerRect = outer.getBoundingClientRect();
+            const innerRect = inner.getBoundingClientRect();
+            console.log('  Outer left:', outerRect.left, 'right:', outerRect.right, 'width:', outerRect.width);
+            console.log('  Inner left:', innerRect.left, 'right:', innerRect.right, 'width:', innerRect.width);
+            console.log('  Inner is centered:', Math.abs((outerRect.left + outerRect.right)/2 - (innerRect.left + innerRect.right)/2) < 5);
+        }
+    </script>
+</body>
+</html>

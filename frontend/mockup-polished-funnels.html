@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polished Funnels - Design Mockup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #f8fafc, #e2e8f0);
+            background-image: 
+                linear-gradient(to right, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+            background-size: 24px 24px;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        @keyframes slideUpFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-up {
+            animation: slideUpFadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+
+        .sparkline-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            opacity: 0.2;
+            transition: opacity 0.3s;
+        }
+
+        .glass-card:hover .sparkline-container {
+            opacity: 0.35;
+        }
+
+        .badge-new {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .trend-up {
+            color: #10b981;
+        }
+
+        .trend-down {
+            color: #ef4444;
+        }
+
+        canvas {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 animate-slide-up">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <h1 class="text-4xl font-bold text-slate-900">Sales Funnels</h1>
+                        <span class="badge-new text-white text-xs font-bold px-3 py-1 rounded-full">NEW</span>
+                    </div>
+                    <p class="text-slate-600 text-lg">Automate lead qualification and conversion with AI-powered funnels</p>
+                </div>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-all hover:scale-105">
+                    + Create Funnel
+                </button>
+            </div>
+        </div>
+
+        <!-- Stat Cards with Sparklines -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Funnels -->
+            <div class="glass-card rounded-xl p-6 relative overflow-hidden animate-slide-up delay-100">
+                <div class="sparkline-container">
+                    <canvas id="sparkline1"></canvas>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-semibold text-slate-700">Total Funnels</span>
+                        <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <div class="text-4xl font-bold text-slate-900 mb-1">3</div>
+                    <p class="text-sm font-medium text-slate-600">2 active</p>
+                </div>
+            </div>
+
+            <!-- Total Calls Today -->
+            <div class="glass-card rounded-xl p-6 relative overflow-hidden animate-slide-up delay-200">
+                <div class="sparkline-container">
+                    <canvas id="sparkline2"></canvas>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-semibold text-slate-700">Total Calls Today</span>
+                        <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                        </svg>
+                    </div>
+                    <div class="text-4xl font-bold text-slate-900 mb-1">479</div>
+                    <p class="text-sm font-medium trend-up">↑ 12% from yesterday</p>
+                </div>
+            </div>
+
+            <!-- Qualified Leads -->
+            <div class="glass-card rounded-xl p-6 relative overflow-hidden animate-slide-up delay-300">
+                <div class="sparkline-container">
+                    <canvas id="sparkline3"></canvas>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-semibold text-slate-700">Qualified Leads</span>
+                        <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="text-4xl font-bold text-slate-900 mb-1">154</div>
+                    <p class="text-sm font-medium trend-up">↑ 8% this week</p>
+                </div>
+            </div>
+
+            <!-- Avg Conversion -->
+            <div class="glass-card rounded-xl p-6 relative overflow-hidden animate-slide-up delay-400">
+                <div class="sparkline-container">
+                    <canvas id="sparkline4"></canvas>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-semibold text-slate-700">Avg Conversion</span>
+                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <div class="text-4xl font-bold text-slate-900 mb-1">30%</div>
+                    <p class="text-sm font-medium text-slate-600">Above industry avg</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Funnel Cards -->
+        <div class="space-y-6">
+            <!-- Home Buyer Qualification -->
+            <div class="glass-card rounded-xl p-6 animate-slide-up" style="animation-delay: 500ms;">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-1">Home Buyer Qualification</h3>
+                        <p class="text-slate-600">Qualify potential home buyers and book property viewings</p>
+                    </div>
+                    <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Live</span>
+                </div>
+                
+                <div class="grid grid-cols-4 gap-4 mb-4">
+                    <div>
+                        <div class="text-sm text-slate-600 mb-1">Calls</div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-slate-600 mb-1">Qual. Leads</div>
+                        <div class="text-2xl font-bold text-slate-900">89</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-slate-600 mb-1">Booked</div>
+                        <div class="text-2xl font-bold text-slate-900">67</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-slate-600 mb-1">Conversion</div>
+                        <div class="text-2xl font-bold text-emerald-600">50%</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-100 rounded-full h-2 mb-2">
+                    <div class="bg-gradient-to-r from-blue-500 to-emerald-500 h-2 rounded-full" style="width: 50%;"></div>
+                </div>
+                <div class="text-xs text-slate-500">Cal → Appointment: 50%</div>
+            </div>
+
+            <!-- SaaS Product Demo -->
+            <div class="glass-card rounded-xl p-6 animate-slide-up" style="animation-delay: 600ms;">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-1">SaaS Product Demo Booking</h3>
+                        <p class="text-slate-600">Qualify leads and schedule product demonstrations</p>
+                    </div>
+                    <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Live</span>
+                </div>
+                
+                <div class="grid grid-cols-4 gap-4 mb-4">
+                    <div>
+                        <div class="text-sm text-slate-600 mb-1">Calls</div>
+                        <div class="text-2xl font-bold text-blue-600">89</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-slate-600 mb-1">Qualified</div>
+                        <div class="text-2xl font-bold text-slate-900">42</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-slate-600 mb-1">Booked</div>
+                        <div class="text-2xl font-bold text-slate-900">31</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-slate-600 mb-1">Conversion</div>
+                        <div class="text-2xl font-bold text-emerald-600">41%</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-100 rounded-full h-2 mb-2">
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: 41%;"></div>
+                </div>
+                <div class="text-xs text-slate-500">Cal → Appointment: 41%</div>
+            </div>
+        </div>
+
+        <!-- Note -->
+        <div class="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-xl animate-slide-up" style="animation-delay: 700ms;">
+            <h4 class="font-bold text-blue-900 mb-2">✨ Key Polish Features in This Mockup:</h4>
+            <ul class="text-sm text-blue-800 space-y-1">
+                <li>• <strong>Sparklines:</strong> Animated mini-charts behind each stat card showing trend data</li>
+                <li>• <strong>Glassmorphism:</strong> Frosted glass effect with backdrop blur on all cards</li>
+                <li>• <strong>Smooth Animations:</strong> Staggered slide-up fade-in effects as elements load</li>
+                <li>• <strong>Grid Background:</strong> Subtle dot pattern across the page background</li>
+                <li>• <strong>Enhanced Hover:</strong> Cards scale up (1.03x) and glow on hover</li>
+                <li>• <strong>Modern Typography:</strong> Inter font with refined sizing and weights</li>
+                <li>• <strong>Professional Colors:</strong> Refined color palette with proper contrast</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Generate sparkline charts
+        function createSparkline(canvasId, color) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const data = Array.from({length: 20}, () => Math.random() * 100 + 50);
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map((_, i) => i),
+                    datasets: [{
+                        data: data,
+                        borderColor: color,
+                        backgroundColor: `${color}40`,
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    },
+                    elements: {
+                        line: { borderWidth: 2 }
+                    }
+                }
+            });
+        }
+
+        // Create sparklines with different colors
+        createSparkline('sparkline1', '#3b82f6'); // Blue
+        createSparkline('sparkline2', '#10b981'); // Emerald
+        createSparkline('sparkline3', '#a855f7'); // Purple
+        createSparkline('sparkline4', '#f59e0b'); // Amber
+    </script>
+</body>
+</html>
