@@ -20,4 +20,14 @@ twilio==8.10.3
 # Utilities - Compatible versions
 python-dotenv==1.0.0
 requests==2.31.0
-# Remove pydantic - not needed if not used
+
+# For brand_extractor.py (brands_api dependency)
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# For PDF exports in brands_api
+reportlab==4.0.7
+Pillow==10.1.0
+
+# For JWT authentication
+PyJWT==2.8.0

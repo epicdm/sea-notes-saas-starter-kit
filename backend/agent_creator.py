@@ -12,10 +12,13 @@ logger = logging.getLogger(__name__)
 
 class AgentCreator:
     """Creates LiveKit agent files from frontend configuration"""
-    
-    def __init__(self, agents_dir: str = "/opt/livekit1/agents"):
+
+    def __init__(self, agents_dir: str = None):
+        # Use environment variable or default to ./agents relative to backend
+        if agents_dir is None:
+            agents_dir = os.getenv('AGENTS_DIR', './agents')
         self.agents_dir = Path(agents_dir)
-        self.agents_dir.mkdir(exist_ok=True)
+        self.agents_dir.mkdir(exist_ok=True, parents=True)
     
     def create_agent(self, config: Dict[str, Any]) -> Dict[str, Any]:
         """
