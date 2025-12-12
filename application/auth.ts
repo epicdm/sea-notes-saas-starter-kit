@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null
         }
 
-        const user = await prisma.users.findUnique({
+        const user = await prisma.user.findUnique({
           where: { email: credentials.email as string }
         })
 
@@ -63,18 +63,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // Handle Google OAuth sign-in
         if (account?.provider === "google" && user.email) {
           // Check if user exists in database
-          let existingUser = await prisma.users.findUnique({
+          let existingUser = await prisma.user.findUnique({
             where: { email: user.email },
             include: {
               accounts: true,
-              organizations: true,
+              memberships: {
+                include: {
+                  organization: true
+                }
+              }
             }
           })
 
           // Create user if doesn't exist
           if (!existingUser) {
             const { randomUUID } = await import('crypto')
-            existingUser = await prisma.users.create({
+            existingUser = await prisma.user.create({
               data: {
                 id: randomUUID(),
                 email: user.email,
@@ -85,7 +89,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               },
               include: {
                 accounts: true,
-                organizations: true,
+                memberships: {
+                  include: {
+                    organization: true
+                  }
+                }
               }
             })
             console.log(`✅ Created new user: ${user.email}`)
@@ -97,7 +105,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         )
 
         if (!hasGoogleAccount) {
-          await prisma.accounts.create({
+          await prisma.account.create({
             data: {
               userId: existingUser.id,
               type: account.type,
@@ -114,12 +122,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         // Create organization and trial if user doesn't have one
-        if (existingUser.organizations.length === 0) {
+        if (existingUser.memberships.length === 0) {
           const orgName = user.name ? `${user.name}'s Organization` : `${user.email}'s Organization`
           const trialDays = parseInt(process.env.TRIAL_DAYS || "14")
           const trialEndsAt = addDays(new Date(), trialDays)
-          
-          await prisma.organizations.create({
+
+          await prisma.organization.create({
             data: {
               name: orgName,
               ownerId: existingUser.id,
