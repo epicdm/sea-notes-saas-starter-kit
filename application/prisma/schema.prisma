@@ -1,0 +1,18 @@
+// Stub Prisma schema for frontend build
+// Actual database operations are handled by the backend API
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Minimal stub model to satisfy Prisma
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
