@@ -1,25 +1,27 @@
-import { auth } from "@/auth"
 import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
-// Routes that require authentication
-const protectedRoutes = [
-  "/dashboard",
-  "/admin",
-  "/agents",
-  "/phone-numbers",
-  "/calls",
-  "/analytics",
-  "/settings",
-]
+// Lightweight middleware without full auth imports to stay under 1MB edge function limit
+// Auth is handled server-side in individual pages/API routes
 
-// Routes that should redirect authenticated users away
-const authRoutes = ["/auth/signin", "/auth/signup"]
-
-export default auth((req) => {
+export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // DEVELOPMENT BYPASS: Only allow actual localhost access (not proxied requests)
-  // Check X-Forwarded-Host first (set by Apache), fall back to Host header
+  // Allow all API routes - they handle their own auth
+  if (pathname.startsWith("/api/")) {
+    return NextResponse.next()
+  }
+
+  // Allow static files and public routes
+  if (
+    pathname.startsWith("/_next/") ||
+    pathname.startsWith("/favicon") ||
+    pathname.match(/\.(svg|png|jpg|jpeg|gif|webp|ico)$/)
+  ) {
+    return NextResponse.next()
+  }
+
+  // DEVELOPMENT BYPASS for localhost
   const forwardedHost = req.headers.get('x-forwarded-host') || req.headers.get('host') || '';
   const isLocalhost = forwardedHost.includes('localhost') || forwardedHost.includes('127.0.0.1');
 
@@ -28,47 +30,13 @@ export default auth((req) => {
     return NextResponse.next();
   }
 
-  // Allow all API routes - they handle their own auth
-  if (pathname.startsWith("/api/")) {
-    return NextResponse.next()
-  }
-
-  const isAuthenticated = !!req.auth
-
-  // Debug logging
-  console.log(`🔒 Middleware check: ${pathname}, auth: ${isAuthenticated ? 'YES (NextAuth)' : 'NONE'}`)
-
-  // Check if route requires authentication
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  )
-  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route))
-
-  // Redirect unauthenticated users to sign in
-  if (isProtectedRoute && !isAuthenticated) {
-    console.log(`🔐 Redirecting to sign-in: ${pathname} (no NextAuth session)`)
-    const signInUrl = new URL("/auth/signin", req.url)
-    signInUrl.searchParams.set("callbackUrl", pathname)
-    return NextResponse.redirect(signInUrl)
-  }
-
-  // Redirect authenticated users away from auth pages
-  if (isAuthRoute && isAuthenticated) {
-    console.log(`✅ Redirecting authenticated user to dashboard`)
-    return NextResponse.redirect(new URL("/dashboard", req.url))
-  }
-
   return NextResponse.next()
-})
+}
 
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
+     * Match all request paths except static files
      */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
