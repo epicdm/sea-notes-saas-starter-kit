@@ -5,7 +5,21 @@
 
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let resendClient: Resend | null = null
+
+/**
+ * Get or initialize Resend client (lazy initialization to avoid build-time errors)
+ */
+function getResendClient(): Resend {
+  if (!resendClient) {
+    const apiKey = process.env.RESEND_API_KEY
+    if (!apiKey) {
+      throw new Error('RESEND_API_KEY environment variable is not set')
+    }
+    resendClient = new Resend(apiKey)
+  }
+  return resendClient
+}
 
 const FROM_EMAIL = process.env.EMAIL_FROM || 'Epic Voice <onboarding@epic.dm>'
 const REPLY_TO = process.env.EMAIL_REPLY_TO || 'support@epic.dm'
@@ -31,8 +45,8 @@ export interface TrialExpirationEmailData {
 export async function sendWelcomeEmail(data: WelcomeEmailData) {
   try {
     const trialDays = Math.ceil((data.trialEndsAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-    
-    const result = await resend.emails.send({
+
+    const result = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: data.email,
       replyTo: REPLY_TO,
@@ -53,7 +67,7 @@ export async function sendWelcomeEmail(data: WelcomeEmailData) {
  */
 export async function sendTrialExpirationEmail(data: TrialExpirationEmailData) {
   try {
-    const result = await resend.emails.send({
+    const result = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: data.email,
       replyTo: REPLY_TO,
@@ -74,7 +88,7 @@ export async function sendTrialExpirationEmail(data: TrialExpirationEmailData) {
  */
 export async function sendTrialExpiredEmail(data: Omit<TrialExpirationEmailData, 'daysLeft'>) {
   try {
-    const result = await resend.emails.send({
+    const result = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: data.email,
       replyTo: REPLY_TO,
