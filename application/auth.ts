@@ -5,13 +5,24 @@ import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 import { addDays } from "date-fns"
 
+// Validate required environment variables
+if (!process.env.GOOGLE_CLIENT_ID) {
+  throw new Error('GOOGLE_CLIENT_ID environment variable is not set')
+}
+if (!process.env.GOOGLE_CLIENT_SECRET) {
+  throw new Error('GOOGLE_CLIENT_SECRET environment variable is not set')
+}
+if (!process.env.AUTH_SECRET && !process.env.NEXTAUTH_SECRET) {
+  throw new Error('AUTH_SECRET or NEXTAUTH_SECRET environment variable is not set')
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   providers: [
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       allowDangerousEmailAccountLinking: true,
     }),
     Credentials({
