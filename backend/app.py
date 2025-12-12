@@ -58,6 +58,19 @@ def create_app():
     @app.route('/health')
     def health():
         return {'status': 'healthy', 'service': 'livekit-backend'}, 200
+
+    # Debug endpoint to show registered routes
+    @app.route('/debug/routes')
+    def debug_routes():
+        import urllib
+        routes = []
+        for rule in app.url_map.iter_rules():
+            routes.append({
+                'endpoint': rule.endpoint,
+                'methods': ','.join(rule.methods),
+                'path': str(rule)
+            })
+        return {'routes': routes, 'blueprints': list(app.blueprints.keys())}, 200
     
     # Import and register blueprints
     try:
