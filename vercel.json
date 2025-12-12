@@ -1,12 +1,3 @@
 {
-  "buildCommand": "cd application && npm install && npm run build",
-  "outputDirectory": "application/.next",
-  "installCommand": "cd application && npm install",
-  "framework": "nextjs",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/application/$1"
-    }
-  ]
+  "framework": "nextjs"
 }
